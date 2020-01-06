@@ -1,11 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:sirius_tracker_contratante/business/servicesbuyserbusiness.dart';
-import 'package:sirius_tracker_contratante/model/servicesbyuser.dart';
 import 'package:sirius_tracker_contratante/splash_screen.dart';
-import 'myhomepage.dart';
-import 'service.dart';
 
 void main() => runApp(MyApp());
 

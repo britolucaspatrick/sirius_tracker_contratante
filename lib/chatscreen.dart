@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'model/servicesbyuser.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class ChatScreen extends StatefulWidget {
   final ServicesByUser serv;
@@ -43,13 +43,17 @@ class ChatScreenState extends State<ChatScreen> {
     isLoading = false;
     isShowSticker = false;
     FirebaseAuth.instance.currentUser().then((value){
-      user = value;
+      setState(() {
+        user = value;
+      });
     });
     readLocal();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(user.uid);
+
     return WillPopScope(
       child: Stack(
         children: <Widget>[
@@ -141,7 +145,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildItem(int index, DocumentSnapshot document) {
-    if (document['idFrom'] == null || document["idFrom"] == "") {
+    if (document['idFrom'] != user.uid) {
       return Container(
         child: Column(
           children: <Widget>[
@@ -218,6 +222,7 @@ class ChatScreenState extends State<ChatScreen> {
               child: Text(
                 DateFormat('dd MMM kk:mm')
                     .format(DateTime.fromMillisecondsSinceEpoch(int.parse(document['timestamp']))),
+                style: TextStyle(color: Colors.black, fontSize: 12.0, fontStyle: FontStyle.italic),
               ),
               margin: EdgeInsets.only(left: 50.0, top: 5.0, bottom: 5.0),
             ),
@@ -293,7 +298,7 @@ class ChatScreenState extends State<ChatScreen> {
                     ),
                     margin: EdgeInsets.only(right: 10.0),
                   ),
-                Material(
+                /*Material(
                   child: CachedNetworkImage(
                     placeholder: (context, url) => Container(
                       child: CircularProgressIndicator(
@@ -304,7 +309,7 @@ class ChatScreenState extends State<ChatScreen> {
                       height: 35.0,
                       padding: EdgeInsets.all(10.0),
                     ),
-                    imageUrl: user.photoUrl,
+                    //imageUrl: user.photoUrl,
                     width: 35.0,
                     height: 35.0,
                     fit: BoxFit.cover,
@@ -313,22 +318,24 @@ class ChatScreenState extends State<ChatScreen> {
                     Radius.circular(18.0),
                   ),
                   clipBehavior: Clip.hardEdge,
-                ),
+                ),*/
               ],
               mainAxisAlignment: MainAxisAlignment.end,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-              Container(
-                child: Text(
-                  DateFormat('dd MMM kk:mm')
-                      .format(DateTime.fromMillisecondsSinceEpoch(int.parse(document['timestamp']))),
+                Container(
+                  child: Text(
+                    DateFormat('dd MMM kk:mm')
+                        .format(DateTime.fromMillisecondsSinceEpoch(int.parse(document['timestamp']))),
+                    style: TextStyle(color: Colors.black, fontSize: 12.0, fontStyle: FontStyle.italic),
+                  ),
+                  margin: EdgeInsets.only(top: 5.0, right: 55.0),
                 ),
-                margin: EdgeInsets.only(top: 5.0, right: 55.0),
-              ),
-            ],
+              ],
             ),
+
           ],
         ),
       );
@@ -385,6 +392,7 @@ class ChatScreenState extends State<ChatScreen> {
           Flexible(
             child: Container(
               child: TextField(
+                style: TextStyle(color: Colors.black, fontSize: 15.0),
                 controller: textEditingController,
                 decoration: InputDecoration.collapsed(
                   hintText: 'Digite sua mensagem...',
