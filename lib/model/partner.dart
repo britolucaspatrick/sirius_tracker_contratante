@@ -10,7 +10,7 @@ class Partner {
   final String st_registro;
   final String telefone_adm;
   final String telefone_sac;
-  final String url_logo;
+  String url_logo;
   String documentID;
 
   Partner(

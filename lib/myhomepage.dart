@@ -653,8 +653,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             st_registro: 'A',
                             telefone_adm: _telefone_adm.text,
                             telefone_sac: _telefone_sac.text,
-                            url_logo: saveImage()
-                        )).then((value){
+                            url_logo: ''
+                        ), _imageLogo[0]).then((value){
                           Alert.showAlertDialog(context, 'Salvo com sucesso');
                         }).catchError((v){
                           Alert.showAlertDialog(context, 'Erro ao salvar');
@@ -671,7 +671,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  String saveImage(){
-    return '';
-  }
+
+
 }
